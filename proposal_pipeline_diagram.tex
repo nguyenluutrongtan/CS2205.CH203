@@ -4,7 +4,7 @@
 \usepackage[T5]{fontenc}
 \usepackage[vietnamese]{babel}
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta,positioning,fit,backgrounds,calc}
+\usetikzlibrary{arrows.meta,positioning,fit,backgrounds,calc,shadows,shadows.blur}
 
 \definecolor{inputblue}{RGB}{218,235,255}
 \definecolor{modelgreen}{RGB}{224,244,232}
@@ -16,15 +16,22 @@
 \tikzset{
   block/.style={
     rectangle,
-    rounded corners=2pt,
+    rounded corners=6pt,
     draw=linegray,
-    line width=0.55pt,
+    line width=0.75pt,
     align=center,
     minimum width=34mm,
     minimum height=10mm,
     inner xsep=5pt,
     inner ysep=4pt,
-    font=\small
+    font=\small,
+    blur shadow={
+      shadow blur steps=5,
+      shadow blur extra rounding=1.5pt,
+      shadow xshift=1.2pt,
+      shadow yshift=-1.2pt,
+      shadow opacity=18
+    }
   },
   smallblock/.style={
     block,
@@ -34,7 +41,7 @@
   },
   group/.style={
     rectangle,
-    rounded corners=3pt,
+    rounded corners=6pt,
     draw=linegray,
     line width=0.55pt,
     dashed,
@@ -110,10 +117,17 @@
 \node[
   labeltext,
   draw=linegray,
-  rounded corners=2pt,
+  rounded corners=5pt,
   fill=white,
   inner xsep=6pt,
   inner ysep=4pt,
+  blur shadow={
+    shadow blur steps=4,
+    shadow blur extra rounding=1.2pt,
+    shadow xshift=1pt,
+    shadow yshift=-1pt,
+    shadow opacity=14
+  },
   below=8mm of $(report)!0.5!(tta)$
 ] (note)
   {Ghi chú: không dùng VGGT làm độ sâu chuẩn; dùng thông tin hình học từ VGGT để kiểm tra nhất quán 3D.};
@@ -122,8 +136,9 @@
 \begin{pgfonlayer}{background}
   \node[group, fit=(depthmodel)(depth)(errors), label={[labeltext]above:Mô hình cần đánh giá}] {};
   \node[group, fit=(vggt)(geometry), label={[labeltext]above:Thông tin hỗ trợ từ VGGT}] {};
-  \node[group, fit=(metrics)(m1)(m2)(m3), label={[labeltext]above:Các thước đo đề xuất}] {};
+  \node[group, fit=(metrics)(m1)(m2)(m3), label={[labeltext]above:Các chỉ số đánh giá}] {};
 \end{pgfonlayer}
 
 \end{tikzpicture}
 \end{document}
+
