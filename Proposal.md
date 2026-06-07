@@ -50,9 +50,9 @@ Các mục tiêu cụ thể gồm:
 
 ### 6.1. Phạm vi, đầu vào và đầu ra
 
-Đề tài tập trung vào đánh giá tính nhất quán hình học 3D của bản đồ độ sâu video trên các bộ dữ liệu có sẵn, không đặt mục tiêu tạo bộ dữ liệu chuẩn mới hoặc huấn luyện một mô hình ước lượng độ sâu mới từ đầu. Phần hiệu chỉnh ở thời điểm kiểm thử chỉ được xem là hướng mở rộng nhẹ sau khi các chỉ số đánh giá đã được kiểm chứng sơ bộ.
+Đề tài tập trung vào đánh giá tính nhất quán hình học 3D của bản đồ độ sâu video trên các bộ dữ liệu có sẵn, không đặt mục tiêu tạo bộ dữ liệu chuẩn mới hoặc huấn luyện một mô hình ước lượng độ sâu mới từ đầu. Phần hiệu chỉnh ở thời điểm kiểm thử chỉ được xem là thử nghiệm phụ sau khi các chỉ số đánh giá đã được kiểm chứng sơ bộ; trọng tâm chính của đề tài vẫn là thiết kế và kiểm chứng quy trình đánh giá.
 
-Đầu vào dự kiến gồm video ngắn khoảng 8 đến 64 khung hình, ảnh màu của từng khung hình, bản đồ độ sâu do mô hình cần đánh giá tạo ra, thông tin hình học do VGGT cung cấp, và độ sâu thật hoặc vị trí camera thật nếu bộ dữ liệu có sẵn. Các bộ dữ liệu có thể được xem xét gồm KITTI, Sintel, TUM RGB-D và ScanNet.
+Đầu vào dự kiến gồm video ngắn khoảng 8 đến 64 khung hình, ảnh màu của từng khung hình, bản đồ độ sâu do mô hình cần đánh giá tạo ra, thông tin hình học do VGGT cung cấp, và độ sâu thật hoặc vị trí camera thật nếu bộ dữ liệu có sẵn. Để bảo đảm tính khả thi, đề tài ưu tiên chọn TUM RGB-D và Sintel làm dữ liệu thử nghiệm chính vì có thông tin hình học hỗ trợ kiểm chứng; KITTI hoặc ScanNet chỉ được dùng bổ sung nếu thời gian và tài nguyên tính toán cho phép.
 
 Đầu ra dự kiến gồm nhóm chỉ số đánh giá tính nhất quán hình học 3D, bảng hoặc biểu đồ thể hiện sai số theo mức độ lỗi, hình minh họa trực quan bằng điểm theo dõi và điểm chiếu lại, cùng một chương trình hoặc sổ tay thử nghiệm nhỏ nếu cần minh họa tính khả thi.
 
@@ -82,20 +82,18 @@ Các chỉ số trên sẽ được kiểm chứng theo ba hướng. Một là k
 
 ### 6.4. Hiệu chỉnh ở thời điểm kiểm thử và giảm rủi ro
 
-Sau khi các chỉ số đánh giá hình học được kiểm chứng, đề tài sẽ xem xét dùng chúng để hiệu chỉnh kết quả độ sâu ở thời điểm kiểm thử. Mục tiêu của bước này không phải là huấn luyện lại toàn bộ mô hình, mà là điều chỉnh nhẹ kết quả của từng video để làm cho độ sâu nhất quán hơn về mặt hình học. Các hướng thử nghiệm có thể gồm hiệu chỉnh tỉ lệ và độ lệch theo video, thêm phần sửa nhỏ trên bản đồ độ sâu, hoặc chỉ điều chỉnh một phần nhỏ của mô hình nếu có điều kiện.
+Sau khi các chỉ số đánh giá hình học được kiểm chứng, đề tài có thể xem xét dùng chúng để hiệu chỉnh kết quả độ sâu ở thời điểm kiểm thử. Đây là phần thử nghiệm phụ, không phải tiêu chí chính để đánh giá thành công của đề tài. Mục tiêu của bước này không phải là huấn luyện lại toàn bộ mô hình, mà là điều chỉnh nhẹ kết quả của từng video để làm cho độ sâu nhất quán hơn về mặt hình học. Các hướng thử nghiệm có thể gồm hiệu chỉnh tỉ lệ và độ lệch theo video, thêm phần sửa nhỏ trên bản đồ độ sâu, hoặc chỉ điều chỉnh một phần nhỏ của mô hình nếu có điều kiện.
 
 Một số rủi ro chính gồm VGGT không phải dữ liệu đúng tuyệt đối, nhầm quy ước camera, vật thể chuyển động, dữ liệu không thống nhất giữa các bộ dữ liệu và chi phí tính toán cao. Để giảm rủi ro, đề tài sẽ dùng lỗi có kiểm soát, so sánh với dữ liệu thật nếu có, kiểm tra trực quan bằng điểm chiếu lại, ưu tiên video ngắn và lưu kết quả trung gian để tránh chạy lại toàn bộ quy trình.
 
 ## 7. Kết quả mong đợi
 
-Kết quả mong đợi của đề tài gồm:
+Kết quả mong đợi của đề tài bao gồm:
 
-1. Một quy trình đánh giá tính nhất quán hình học 3D của video độ sâu trên các bộ dữ liệu có sẵn.
-2. Ba nhóm chỉ số đánh giá gồm độ ổn định 3D của điểm theo dõi, sai số chiếu lại lên ảnh và độ trôi tỉ lệ theo thời gian.
-3. Một quy trình tạo lỗi có kiểm soát để so sánh độ sâu ban đầu với các phiên bản lỗi nhẹ và lỗi nặng.
-4. Bảng kết quả, biểu đồ và hình minh họa thể hiện sai số hình học có tăng theo mức độ lỗi hay không.
-5. So sánh sơ bộ giữa các chỉ số đề xuất và các sai số truyền thống như AbsRel, RMSE hoặc sai số chiếu lại nếu bộ dữ liệu có ground truth.
-6. Một thử nghiệm hiệu chỉnh nhẹ ở thời điểm kiểm thử nếu các chỉ số đánh giá ban đầu đủ ổn định.
+1. **Quy trình đánh giá tính nhất quán hình học 3D** cho video độ sâu, được cụ thể hóa qua ba nhóm chỉ số đo lường: mức độ ổn định 3D của các điểm theo vết, sai số chiếu lại trên mặt phẳng ảnh, và độ trôi tỉ lệ theo thời gian.
+2. **Quy trình thực nghiệm với sai số có kiểm soát** nhằm kiểm chứng độ nhạy của các chỉ số đề xuất. Kết quả được định lượng qua hệ thống bảng số liệu, biểu đồ độ nhạy và hình ảnh trực quan đối chiếu giữa các mức độ nhiễu khác nhau (độ sâu nguyên bản, lỗi nhẹ và lỗi nặng).
+3. **Báo cáo phân tích tương quan** giữa nhóm chỉ số hình học đề xuất và các sai số truyền thống (như AbsRel, RMSE) trên các bộ dữ liệu có độ sâu chuẩn (ground truth), giúp xác định rõ giá trị bổ trợ của các chỉ số mới.
+4. **Kết quả thử nghiệm hiệu chỉnh thích ứng tại thời điểm kiểm thử (test-time adaptation)**, đóng vai trò minh họa khả năng ứng dụng thực tế của quy trình đánh giá trong việc tinh chỉnh và nâng cao tính nhất quán hình học của bản đồ độ sâu video.
 
 ## 8. Tài liệu tham khảo
 
