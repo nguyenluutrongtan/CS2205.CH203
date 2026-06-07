@@ -9,6 +9,7 @@
 \definecolor{inputblue}{RGB}{218,235,255}
 \definecolor{modelgreen}{RGB}{224,244,232}
 \definecolor{vggtorange}{RGB}{255,235,210}
+\definecolor{groundblue}{RGB}{220,238,250}
 \definecolor{metricpurple}{RGB}{235,226,250}
 \definecolor{resultgray}{RGB}{238,238,238}
 \definecolor{linegray}{RGB}{80,80,80}
@@ -56,6 +57,10 @@
     font=\footnotesize,
     align=center,
     text=linegray
+  },
+  optional/.style={
+    block,
+    dashed
   }
 }
 
@@ -65,53 +70,61 @@
 % Input
 \node[block, fill=inputblue] (video) {Video đầu vào\\[-1pt]\footnotesize $I_1,\ldots,I_T$};
 
-% Two branches
-\node[block, fill=modelgreen, below left=15mm and 19mm of video] (depthmodel)
+% Three branches
+\node[block, fill=modelgreen, below left=15mm and 38mm of video] (depthmodel)
   {Mô hình ước lượng độ sâu\\[-1pt]\footnotesize VDA / Depth Anything};
-\node[block, fill=vggtorange, below right=15mm and 19mm of video] (vggt)
+\node[block, fill=vggtorange, below=15mm of video] (vggt)
   {VGGT cố định\\[-1pt]\footnotesize nguồn thông tin hình học};
+\node[block, fill=groundblue, below right=15mm and 38mm of video] (groundtruth)
+  {Dữ liệu ground truth\\[-1pt]\footnotesize chỉ dùng để kiểm chứng};
 
 \node[smallblock, fill=modelgreen, below=9mm of depthmodel] (depth)
   {Bản đồ độ sâu\\[-1pt]\footnotesize $D_t$};
 \node[smallblock, fill=vggtorange, below=9mm of vggt] (geometry)
   {Camera, điểm theo dõi, độ tin cậy\\[-1pt]\footnotesize $K_t, P_t, u_{i,t}, c_{i,t}$};
+\node[smallblock, fill=groundblue, below=9mm of groundtruth] (reference)
+  {Độ sâu, camera, tương ứng điểm\\[-1pt]\footnotesize dữ liệu tham chiếu độc lập};
 
 % Optional controlled errors
 \node[smallblock, fill=resultgray, below=9mm of depth] (errors)
   {Lỗi có kiểm soát\\[-1pt]\footnotesize trôi tỉ lệ, nhiễu, trễ khung hình};
 
-% Metrics
-\node[block, fill=metricpurple, below=25mm of $(errors)!0.5!(geometry)$] (metrics)
-  {Đánh giá nhất quán hình học 3D};
+% Evaluation protocols and metrics
+\node[block, fill=metricpurple, below=25mm of geometry] (protocols)
+  {Hai giao thức đánh giá\\[-1pt]\footnotesize VGGT và ground truth};
 
-\node[smallblock, fill=metricpurple, below left=9mm and -5mm of metrics] (m1)
+\node[smallblock, fill=metricpurple, below left=10mm and 7mm of protocols] (m1)
   {Ổn định điểm 3D};
-\node[smallblock, fill=metricpurple, below=9mm of metrics] (m2)
-  {Sai số chiếu lại};
-\node[smallblock, fill=metricpurple, below right=9mm and -5mm of metrics] (m3)
-  {Trôi tỉ lệ};
+\node[smallblock, fill=metricpurple, below=10mm of protocols] (m2)
+  {Chiếu lại dài hạn};
+\node[smallblock, fill=metricpurple, below right=10mm and 7mm of protocols] (m3)
+  {Trôi tỉ lệ--độ lệch};
 
 % Results
 \node[block, fill=resultgray, below=20mm of m2] (report)
   {Kết quả đánh giá\\[-1pt]\footnotesize bảng số liệu, biểu đồ, hình minh họa};
-\node[block, fill=resultgray, right=14mm of report] (tta)
-  {Hiệu chỉnh ở thời điểm kiểm thử\\[-1pt]\footnotesize chỉnh tỉ lệ / sửa nhỏ độ sâu};
+\node[optional, fill=resultgray, right=14mm of report] (tta)
+  {Thử nghiệm hiệu chỉnh\\[-1pt]\footnotesize affine theo thời gian};
 
 % Arrows
 \draw[arrow] (video) -- (depthmodel);
 \draw[arrow] (video) -- (vggt);
+\draw[arrow] (video) -- (groundtruth);
 \draw[arrow] (depthmodel) -- (depth);
 \draw[arrow] (vggt) -- (geometry);
+\draw[arrow] (groundtruth) -- (reference);
 \draw[arrow] (depth) -- (errors);
-\draw[arrow] (errors) |- (metrics);
-\draw[arrow] (geometry) |- (metrics);
-\draw[arrow] (metrics) -- (m1);
-\draw[arrow] (metrics) -- (m2);
-\draw[arrow] (metrics) -- (m3);
+\draw[arrow] (errors) |- (protocols);
+\draw[arrow] (geometry) -- (protocols);
+\draw[arrow] (reference) |- (protocols);
+\draw[arrow] (protocols) -- (m1);
+\draw[arrow] (protocols) -- (m2);
+\draw[arrow] (protocols) -- (m3);
 \draw[arrow] (m1) |- (report);
 \draw[arrow] (m2) -- (report);
 \draw[arrow] (m3) |- (report);
-\draw[arrow] (report) -- (tta);
+\draw[arrow, dashed] (m3) |- (tta);
+\draw[arrow, dashed] (tta) -- (report);
 
 % Clarifying note
 \node[
@@ -130,13 +143,14 @@
   },
   below=8mm of $(report)!0.5!(tta)$
 ] (note)
-  {Ghi chú: không dùng VGGT làm độ sâu chuẩn; dùng thông tin hình học từ VGGT để kiểm tra nhất quán 3D.};
+  {Ground truth chỉ dùng để đối chứng; nhánh hiệu chỉnh chỉ dùng tín hiệu VGGT và không cập nhật trọng số mô hình.};
 
 % Background groups
 \begin{pgfonlayer}{background}
   \node[group, fit=(depthmodel)(depth)(errors), label={[labeltext]above:Mô hình cần đánh giá}] {};
   \node[group, fit=(vggt)(geometry), label={[labeltext]above:Thông tin hỗ trợ từ VGGT}] {};
-  \node[group, fit=(metrics)(m1)(m2)(m3), label={[labeltext]above:Các chỉ số đánh giá}] {};
+  \node[group, fit=(groundtruth)(reference), label={[labeltext]above:Nhánh đối chứng độc lập}] {};
+  \node[group, fit=(protocols)(m1)(m2)(m3), label={[labeltext]above:Các chỉ số đánh giá}] {};
 \end{pgfonlayer}
 
 \end{tikzpicture}
