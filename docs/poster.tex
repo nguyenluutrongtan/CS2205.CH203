@@ -1,0 +1,326 @@
+% !TeX program = xelatex
+\documentclass[25pt, a0paper, portrait]{tikzposter}
+\usepackage{iftex}
+\ifPDFTeX
+    \usepackage[utf8]{inputenc}
+    \usepackage[T5]{fontenc}
+    \usepackage[vietnamese]{babel}
+\else
+    \usepackage{fontspec}
+    \usepackage[vietnamese]{babel}
+    \setmainfont{Arial}
+    \setsansfont{Arial}
+\fi
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usetikzlibrary{arrows.meta,calc,positioning}
+
+\renewcommand{\familydefault}{\sfdefault}
+\setlength{\parindent}{0pt}
+\setlist[itemize]{leftmargin=1.15em, itemsep=0.28em, topsep=0.18em}
+\setlist[itemize,2]{leftmargin=1.05em, itemsep=0.12em, topsep=0.1em}
+
+% Professional scientific-poster palette.
+\definecolor{navy}{HTML}{12324A}
+\definecolor{teal}{HTML}{1B8A9B}
+\definecolor{cyan}{HTML}{42B7C8}
+\definecolor{paper}{HTML}{F5F8FA}
+\definecolor{card}{HTML}{FFFFFF}
+\definecolor{softLine}{HTML}{C8D9E3}
+\definecolor{muted}{HTML}{5B6770}
+\definecolor{alertColor}{HTML}{C0392B}
+\definecolor{footerBg}{HTML}{E7F1F4}
+
+\definecolorstyle{ScientificColorStyle}{
+    \colorlet{colorOne}{navy}
+    \colorlet{colorTwo}{teal}
+    \colorlet{colorThree}{cyan}
+}{
+    \colorlet{backgroundcolor}{paper}
+    \colorlet{framecolor}{navy}
+    \colorlet{titlebgcolor}{navy}
+    \colorlet{titlefgcolor}{white}
+    \colorlet{blocktitlebgcolor}{card}
+    \colorlet{blocktitlefgcolor}{white}
+    \colorlet{blockbodybgcolor}{card}
+    \colorlet{blockbodyfgcolor}{black}
+    \colorlet{innerblocktitlebgcolor}{teal}
+    \colorlet{innerblocktitlefgcolor}{white}
+    \colorlet{innerblockbodybgcolor}{footerBg}
+    \colorlet{innerblockbodyfgcolor}{black}
+    \colorlet{notefgcolor}{black}
+    \colorlet{notebgcolor}{footerBg}
+    \colorlet{noteframecolor}{teal}
+}
+
+\definetitlestyle{ScientificTitleStyle}{
+    width=\paperwidth, roundedcorners=0, linewidth=0pt, innersep=1.05cm,
+    titletotopverticalspace=0mm, titletoblockverticalspace=11mm,
+    titlegraphictotitledistance=0mm
+}{
+    \draw[fill=titlebgcolor, draw=none] (\titleposleft,\titleposbottom) rectangle (\titleposright,\titlepostop);
+    \draw[fill=teal, draw=none] (\titleposleft,\titleposbottom) rectangle ([yshift=0.42cm]\titleposright,\titleposbottom);
+}
+
+\defineblockstyle{ScientificBlockStyle}{
+    titlewidthscale=1, bodywidthscale=1, titleleft,
+    titleoffsetx=0pt, titleoffsety=0pt, bodyoffsetx=0pt, bodyoffsety=0pt,
+    bodyverticalshift=0pt, roundedcorners=14, linewidth=1.2pt,
+    titleinnersep=0.6cm, bodyinnersep=0.75cm
+}{
+    \draw[
+        fill=blockbodybgcolor,
+        draw=softLine,
+        line width=\blocklinewidth,
+        rounded corners=\blockroundedcorners
+    ] (blockbody.south west) rectangle (blocktitle.north east);
+    \ifBlockHasTitle
+        \draw[fill=teal, draw=none, rounded corners=\blockroundedcorners]
+            (blocktitle.north west) rectangle (blocktitle.south east);
+        \draw[fill=teal, draw=none]
+            (blocktitle.south west) rectangle ([yshift=0.35cm]blocktitle.south east);
+    \fi
+}
+
+\usecolorstyle{ScientificColorStyle}
+\usetitlestyle{ScientificTitleStyle}
+\useblockstyle{ScientificBlockStyle}
+\tikzposterlatexaffectionproofoff
+
+\newcommand{\OverviewDiagram}{%
+\resizebox{0.92\linewidth}{!}{%
+\begin{tikzpicture}[
+    font=\sffamily\footnotesize,
+    flowbox/.style={
+        rounded corners=10pt,
+        line width=1.4pt,
+        minimum height=2.35cm,
+        text width=6.35cm,
+        align=center,
+        inner sep=9pt
+    },
+    mainbox/.style={flowbox, draw=teal, fill=teal!10},
+    signalbox/.style={flowbox, draw=cyan!75!black, fill=cyan!12},
+    metricbox/.style={flowbox, draw=navy!65, fill=navy!6, text width=7.2cm},
+    outbox/.style={flowbox, draw=alertColor!65, fill=alertColor!7, text width=6.95cm},
+    refbox/.style={
+        rounded corners=8pt,
+        line width=1.1pt,
+        minimum height=1.15cm,
+        text width=7.2cm,
+        align=center,
+        inner sep=7pt,
+        draw=softLine,
+        fill=white
+    },
+    verifybox/.style={
+        rounded corners=8pt,
+        line width=1.1pt,
+        minimum height=1.35cm,
+        text width=7.45cm,
+        align=center,
+        inner sep=7pt,
+        draw=teal!65,
+        fill=footerBg
+    },
+    arrow/.style={-{Latex[length=5mm,width=3.6mm]}, draw=navy!72, line width=1.55pt, shorten <=2pt, shorten >=3pt},
+    checkarrow/.style={-{Latex[length=5.6mm,width=3.8mm]}, draw=navy!70, line width=1.65pt, shorten <=3pt, shorten >=5pt}
+]
+    \node[mainbox] (video) at (0,0)
+        {\bfseries Video đầu vào\\[-0.05cm]$I_1,\ldots,I_T$};
+
+    \node[signalbox] (geometry) at (9.0,0)
+        {\bfseries Độ sâu + tín hiệu VGGT\\[-0.05cm]bản đồ $D_t$\\[-0.05cm]camera, điểm 3D, điểm theo dõi};
+
+    \node[metricbox] (metrics) at (18.4,0)
+        {\bfseries Chỉ số nhất quán 3D\\[-0.05cm]ổn định điểm 3D\\[-0.05cm]chiếu lại dài hạn\\[-0.05cm]trôi tỉ lệ--độ lệch};
+
+    \node[outbox] (output) at (28.3,0)
+        {\bfseries Đánh giá + hiệu chỉnh nhẹ\\[-0.05cm]bảng, biểu đồ, minh họa\\[-0.05cm]affine $x'_t=a_t x_t+b_t$};
+
+    \node[refbox] (gt) at (18.4,-4.85)
+        {\bfseries Dữ liệu chuẩn chỉ dùng để kiểm chứng; không tham gia đánh giá VGGT hoặc hiệu chỉnh};
+
+    \node[verifybox] (controlled) at (6.7,-8.85)
+        {\bfseries Sai lệch có kiểm soát\\[-0.05cm]trôi tỉ lệ--độ lệch, trễ khung hình, biến dạng cục bộ};
+
+    \node[verifybox] (benchmark) at (18.4,-8.85)
+        {\bfseries Giao thức tham chiếu\\[-0.05cm]TUM RGB-D, Sintel dùng để kiểm chứng độc lập};
+
+    \node[verifybox] (visual) at (30.1,-8.85)
+        {\bfseries Minh họa trực quan\\[-0.05cm]điểm 3D, chiếu lại, biểu đồ sai lệch};
+
+    \node[verifybox] (ranking) at (6.7,-13.05)
+        {\bfseries Bảng đánh giá\\[-0.05cm]tỉ lệ xếp đúng thứ tự, Spearman, tương quan giao thức};
+
+    \node[verifybox] (curves) at (18.4,-13.05)
+        {\bfseries Biểu đồ độ nhạy\\[-0.05cm]chỉ số thay đổi theo mức sai lệch hình học};
+
+    \node[verifybox] (cases) at (30.1,-13.05)
+        {\bfseries Trường hợp minh họa\\[-0.05cm]so sánh trước và sau hiệu chỉnh};
+
+    \draw[arrow] (video.east) -- (geometry.west);
+    \draw[arrow] (geometry.east) -- (metrics.west);
+    \draw[arrow] (metrics.east) -- (output.west);
+    \draw[checkarrow] (metrics.south) -- (gt.north);
+    \draw[checkarrow] (gt.south) -- (benchmark.north);
+    \draw[arrow] (benchmark.west) -- (controlled.east);
+    \draw[arrow] (benchmark.east) -- (visual.west);
+    \draw[checkarrow] (controlled.south) -- (ranking.north);
+    \draw[checkarrow] (benchmark.south) -- (curves.north);
+    \draw[checkarrow] (visual.south) -- (cases.north);
+\end{tikzpicture}%
+}%
+}
+
+\newcommand{\TakeawayStrip}{%
+\begin{center}
+\begin{tikzpicture}[
+    font=\sffamily,
+    take/.style={
+        rounded corners=9pt,
+        line width=1.2pt,
+        minimum height=2.15cm,
+        text width=0.285\linewidth,
+        align=center,
+        inner sep=12pt,
+        fill=footerBg,
+        draw=softLine
+    }
+]
+    \node[take] (a) at (0,0)
+        {\Large\bfseries Video depth\\[-0.05cm]\normalsize ổn định theo thời gian nhưng có thể sai hình học 3D};
+    \node[take] (b) at (0.34\linewidth,0)
+        {\Large\bfseries VGGT\\[-0.05cm]\normalsize là tín hiệu hỗ trợ, không phải chuẩn đúng tuyệt đối};
+    \node[take] (c) at (0.68\linewidth,0)
+        {\Large\bfseries Kiểm chứng\\[-0.05cm]\normalsize bằng chỉ số, lỗi có kiểm soát và dữ liệu chuẩn nếu có};
+\end{tikzpicture}
+\end{center}
+}
+
+\title{\normalfont\parbox{0.94\linewidth}{\centering
+    {\normalfont\fontsize{50}{60}\selectfont\bfseries Đánh giá và hiệu chỉnh tính nhất quán hình học 3D\\ cho ước lượng độ sâu video bằng VGGT}\\[0.65cm]
+    {\normalfont\fontsize{27}{33}\selectfont\itshape VGGT-Guided Evaluation and Test-Time Adaptation for 3D-Consistent Video Depth Estimation}
+}}
+\author{\Large Nguyễn Lưu Trọng Tấn - 250201089}
+\institute{\large Trường Đại học Công nghệ Thông tin - ĐHQG TP.HCM (UIT)}
+
+\begin{document}
+\maketitle
+
+\begin{columns}
+    \column{0.5}
+    \block{What ?}{
+        Đề xuất một khung đánh giá sử dụng VGGT như nguồn thông tin hình học hỗ trợ (không phải chuẩn tuyệt đối) để:
+        \begin{itemize}
+            \item Phân tích cấu trúc 3D trên các quỹ đạo điểm dài hạn.
+            \item Đề xuất và kiểm chứng 3 nhóm chỉ số: độ ổn định vị trí 3D, sai số chiếu lại dài hạn, độ trôi của tỉ lệ \& độ lệch.
+            \item Thử nghiệm hiệu chỉnh Test-Time Adaptation tối ưu tham số affine theo VGGT để giảm sai lệch.
+        \end{itemize}
+    }
+
+    \column{0.5}
+    \block{Why ?}{
+        \begin{itemize}
+            \item Các mô hình độ sâu video hiện đại (như Video Depth Anything) ổn định về mặt hình ảnh nhưng \textbf{\textit{\color{alertColor}chưa nhất quán về mặt hình học}} (trôi tỉ lệ, biến dạng không gian 3D).
+            \item Các chỉ số hiện có (AbsRel, RMSE, TAE) chủ yếu đo sai số trên từng khung hình hoặc cặp khung hình liền kề, \textbf{\textit{\color{alertColor}chưa phản ánh mức độ sai lệch tích lũy}} dài hạn.
+            \item Cần một công cụ để phát hiện, giải thích và giảm sai lệch hình học khó nhận biết bằng mắt thường.
+        \end{itemize}
+    }
+\end{columns}
+
+\block{Overview}{
+    \begin{center}
+        \OverviewDiagram
+    \end{center}
+}
+
+\begin{columns}
+    \column{0.33}
+    \block{1. Giới thiệu \& Mục tiêu}{
+        Mục tiêu là xây dựng quy trình sử dụng VGGT để đánh giá và hiệu chỉnh tính nhất quán hình học 3D của bản đồ độ sâu video.
+        \begin{itemize}
+            \item \textbf{Bài toán:} Ước lượng độ sâu nhất quán.
+            \item \textbf{Ý tưởng:} Dùng thông tin camera, điểm 3D và điểm theo dõi từ VGGT như tín hiệu hỗ trợ.
+        \end{itemize}
+
+        \vspace{0.45cm}
+        \begin{center}
+            \includegraphics[width=0.96\linewidth]{assets/proposal/video_depth_anything_teaser.png}
+
+            \vspace{0.25cm}
+            {\small\color{muted}Figure 1. Ước lượng độ sâu ổn định theo thời gian (nguồn: Video Depth Anything).}
+        \end{center}
+    }
+
+    \column{0.34}
+    \block{2. Phương pháp \& Chỉ số}{
+        \textbf{Quy trình:}
+        \begin{itemize}
+            \item \textbf{Căn chỉnh chung:} Ước lượng một cặp tham số (scale \& shift) cho toàn bộ đoạn video trong không gian nghịch đảo độ sâu.
+            \item \textbf{Chỉ số đề xuất:}
+            \begin{itemize}
+                \item \textit{Độ ổn định vị trí 3D:} Đo mức biến dạng của cùng một điểm qua nhiều khung hình.
+                \item \textit{Sai số chiếu lại dài hạn:} Phân tích độ lệch chiếu lại theo khoảng cách thời gian.
+                \item \textit{Mức trôi:} Theo dõi sự thay đổi của tỉ lệ và độ lệch.
+            \end{itemize}
+        \end{itemize}
+
+        \vspace{0.45cm}
+        \begin{center}
+            \includegraphics[width=0.96\linewidth]{assets/proposal/vggt_architecture.png}
+
+            \vspace{0.25cm}
+            {\small\color{muted}Figure 2. Mô hình VGGT cung cấp tín hiệu hình học đồng thời.}
+        \end{center}
+    }
+
+    \column{0.33}
+    \block{3. Hiệu chỉnh \& Kết quả}{
+        \textbf{Test-Time Adaptation:}
+        \begin{itemize}
+            \item Hiệu chỉnh tham số affine $x'_t = a_t x_t + b_t$ dựa trên chỉ số VGGT, cố định trọng số mô hình.
+            \item So sánh giao thức dùng VGGT và giao thức dùng dữ liệu chuẩn (TUM RGB-D, Sintel).
+        \end{itemize}
+
+        \vspace{0.35cm}
+        \textbf{Kết quả mong đợi:}
+        \begin{itemize}
+            \item Tỉ lệ xếp đúng thứ tự > 80\% đối với các mức độ sai lệch kiểm soát.
+            \item Giảm trung vị sai số hình học tham chiếu.
+        \end{itemize}
+
+        \vspace{0.45cm}
+        \begin{center}
+            \includegraphics[width=0.96\linewidth]{assets/proposal/depth_anything_v2_teaser.png}
+        \end{center}
+    }
+\end{columns}
+
+\block{}{
+    \TakeawayStrip
+}
+
+\block{}{
+    \begin{minipage}{0.14\linewidth}
+        \centering
+        {\Huge\bfseries\color{navy}UIT}
+    \end{minipage}
+    \begin{minipage}{0.57\linewidth}
+        \textbf{Tài liệu chính:}
+        {\small Wang et al., VGGT, CVPR 2025; Chen et al., Video Depth Anything, CVPR 2025;
+        Yang et al., Depth Anything V2, NeurIPS 2024.}
+    \end{minipage}
+    \begin{minipage}{0.26\linewidth}
+        \raggedleft
+        {\Large\textbf{Nguyễn Lưu Trọng Tấn}}\\
+        {\small 250201089}\\
+        {\small Trường Đại học Công nghệ Thông tin - ĐHQG TP.HCM (UIT)}
+    \end{minipage}
+}
+
+\end{document}
