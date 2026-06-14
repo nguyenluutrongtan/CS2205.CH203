@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poster - PPNCKH</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f8; /* Light gray background */
+            display: flex;
+            justify-content: center;
+        }
+
+        .poster {
+            width: 1200px;
+            min-height: 1697px; /* A0 aspect ratio approx (1:1.414) */
+            height: auto;
+            background-color: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            position: relative;
+            box-sizing: border-box;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* HEADER */
+        .header {
+            background-color: #1781a5;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            border-bottom: 8px solid #000;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 38px;
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+        .header h2 {
+            margin: 10px 0 20px 0;
+            font-size: 22px;
+            font-weight: 500;
+            font-style: italic;
+        }
+        .authors {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .affiliations {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            font-size: 16px;
+        }
+
+        /* WHAT & WHY SECTION */
+        .what-why {
+            display: flex;
+            gap: 40px;
+        }
+        .box {
+            flex: 1;
+            background-color: #eaf5f8;
+            border: 3px solid #1781a5;
+            border-radius: 20px;
+            padding: 20px 30px 30px 30px;
+            position: relative;
+            margin-top: 25px;
+        }
+        .box-title {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            border: 3px solid #1781a5;
+            color: #1781a5;
+            border-radius: 30px;
+            padding: 5px 40px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .box ul {
+            font-size: 16px;
+            line-height: 1.5;
+            margin-top: 15px;
+            color: #333;
+        }
+        .box li {
+            margin-bottom: 8px;
+        }
+        .box p {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #333;
+            margin-top: 10px;
+        }
+        .highlight {
+            color: #d32f2f;
+            font-weight: 700;
+            font-style: italic;
+        }
+
+        /* BANNERS */
+        .banner {
+            background: linear-gradient(to right, #6bb8cd, #1781a5, #6bb8cd);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 28px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .overview-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+        .overview-content img {
+            max-width: 100%;
+            max-height: 250px;
+            object-fit: contain;
+            border: 1px solid #ccc;
+        }
+
+        /* DESCRIPTION CONTENT */
+        .columns {
+            display: flex;
+            gap: 30px;
+            flex: 1;
+        }
+        .col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .col-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1781a5;
+            margin: 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #1781a5;
+        }
+        .col-text {
+            font-size: 15px;
+            line-height: 1.5;
+            color: #333;
+        }
+        .col-text ul {
+            padding-left: 20px;
+            margin-top: 5px;
+        }
+        .col-text li {
+            margin-bottom: 8px;
+        }
+        .col-img-container {
+            text-align: center;
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+        .col-img-container img {
+            max-width: 100%;
+            max-height: 220px;
+            object-fit: contain;
+            border: 1px solid #ccc;
+        }
+        .col-img-caption {
+            font-size: 12px;
+            color: #1781a5;
+            margin-top: 5px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        /* FOOTER */
+        .footer {
+            background-color: #6bb8cd;
+            color: white;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+        .footer-logo {
+            font-size: 36px;
+            font-weight: 900;
+        }
+        .footer-info {
+            text-align: right;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .footer-info span {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="poster">
+        
+        <!-- HEADER -->
+        <div class="header">
+            <h1>Đánh giá và hiệu chỉnh tính nhất quán hình học 3D<br>cho ước lượng độ sâu video bằng VGGT</h1>
+            <h2>VGGT-Guided Evaluation and Test-Time Adaptation for 3D-Consistent Video Depth Estimation</h2>
+            <div class="authors">
+                <span>Tác giả thứ nhất<sup>1,3</sup></span>
+                <span>Tác giả thứ 2<sup>2</sup></span>
+                <span>Tác giả thứ 3<sup>3,1</sup></span>
+                <span>Tác giả thứ 4<sup>3,1</sup></span>
+            </div>
+            <div class="affiliations">
+                <span><sup>1</sup>Trường ĐH Công nghệ Thông tin</span>
+                <span><sup>2</sup>University of Science HCMC, Vietnam</span>
+                <span><sup>3</sup>National Institute of Informatics</span>
+            </div>
+        </div>
+
+        <!-- WHAT & WHY -->
+        <div class="what-why">
+            <div class="box">
+                <div class="box-title">What ?</div>
+                <p>Đề xuất một khung đánh giá sử dụng VGGT như nguồn thông tin hình học hỗ trợ (không phải chuẩn tuyệt đối) để:</p>
+                <ul>
+                    <li>Phân tích cấu trúc 3D trên các quỹ đạo điểm dài hạn.</li>
+                    <li>Đề xuất và kiểm chứng 3 nhóm chỉ số: độ ổn định vị trí 3D, sai số chiếu lại dài hạn, độ trôi của tỉ lệ & độ lệch.</li>
+                    <li>Thử nghiệm hiệu chỉnh Test-Time Adaptation tối ưu tham số affine theo VGGT để giảm sai lệch.</li>
+                </ul>
+            </div>
+            <div class="box">
+                <div class="box-title">Why ?</div>
+                <ul>
+                    <li>Các mô hình độ sâu video hiện đại (như Video Depth Anything) ổn định về mặt hình ảnh nhưng <span class="highlight">chưa nhất quán về mặt hình học</span> (trôi tỉ lệ, biến dạng không gian 3D).</li>
+                    <li>Các chỉ số hiện có (AbsRel, RMSE, TAE) chủ yếu đo sai số trên từng khung hình hoặc cặp khung hình liền kề, <span class="highlight">chưa phản ánh mức độ sai lệch tích lũy</span> dài hạn.</li>
+                    <li>Cần một công cụ để phát hiện, giải thích và giảm sai lệch hình học khó nhận biết bằng mắt thường.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- OVERVIEW BANNER -->
+        <div class="banner">Overview</div>
+        <div class="overview-content">
+            <!-- Diagram from assets -->
+            <img src="assets/proposal/proposal_pipeline_diagram.png" alt="Sơ đồ phương pháp đề xuất">
+        </div>
+
+        <!-- DESCRIPTION BANNER -->
+        <div class="banner">Description</div>
+        
+        <div class="columns">
+            <!-- Column 1 -->
+            <div class="col">
+                <h3 class="col-title">1. Giới thiệu & Mục tiêu</h3>
+                <div class="col-text">
+                    <p>Mục tiêu là xây dựng quy trình sử dụng VGGT để đánh giá và hiệu chỉnh tính nhất quán hình học 3D của bản đồ độ sâu video.</p>
+                    <ul>
+                        <li><b>Bài toán:</b> Ước lượng độ sâu nhất quán.</li>
+                        <li><b>Ý tưởng:</b> Dùng thông tin camera, điểm 3D và điểm theo dõi từ VGGT như tín hiệu hỗ trợ.</li>
+                    </ul>
+                </div>
+                <div class="col-img-container">
+                    <img src="assets/proposal/video_depth_anything_teaser.png" alt="Video Depth Anything">
+                    <div class="col-img-caption">Figure 1. Ước lượng độ sâu ổn định theo thời gian (nguồn: Video Depth Anything).</div>
+                </div>
+            </div>
+
+            <!-- Column 2 -->
+            <div class="col">
+                <h3 class="col-title">2. Phương pháp & Chỉ số</h3>
+                <div class="col-text">
+                    <p><b>Quy trình:</b></p>
+                    <ul>
+                        <li><b>Căn chỉnh chung:</b> Ước lượng một cặp tham số (scale & shift) cho toàn bộ đoạn video trong không gian nghịch đảo độ sâu.</li>
+                        <li><b>Chỉ số đề xuất:</b>
+                            <ul>
+                                <li><i>Độ ổn định vị trí 3D:</i> Đo mức biến dạng của cùng một điểm qua nhiều khung hình.</li>
+                                <li><i>Sai số chiếu lại dài hạn:</i> Phân tích độ lệch chiếu lại theo khoảng cách thời gian.</li>
+                                <li><i>Mức trôi:</i> Theo dõi sự thay đổi của tỉ lệ và độ lệch.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-img-container">
+                    <img src="assets/proposal/vggt_architecture.png" alt="Kiến trúc VGGT">
+                    <div class="col-img-caption">Figure 2. Mô hình VGGT cung cấp tín hiệu hình học đồng thời.</div>
+                </div>
+            </div>
+
+            <!-- Column 3 -->
+            <div class="col">
+                <h3 class="col-title">3. Hiệu chỉnh & Kết quả</h3>
+                <div class="col-text">
+                    <p><b>Test-Time Adaptation:</b></p>
+                    <ul>
+                        <li>Hiệu chỉnh tham số affine \(x'_t = a_t x_t + b_t\) dựa trên chỉ số VGGT, cố định trọng số mô hình.</li>
+                        <li>So sánh giao thức dùng VGGT và giao thức dùng dữ liệu chuẩn (TUM RGB-D, Sintel).</li>
+                    </ul>
+                    <p><b>Kết quả mong đợi:</b></p>
+                    <ul>
+                        <li>Tỉ lệ xếp đúng thứ tự > 80% đối với các mức độ sai lệch kiểm soát.</li>
+                        <li>Giảm trung vị sai số hình học tham chiếu.</li>
+                    </ul>
+                </div>
+                <div class="col-img-container">
+                    <img src="assets/proposal/depth_anything_v2_teaser.png" alt="Depth Anything V2 Teaser" onerror="this.style.display='none'">
+                    <!-- Nêu không dùng được depth anything v2 thì ẩn -->
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <div class="footer-logo">UIT</div>
+            <div class="footer-info">
+                Tên tác giả chính - Trường Đại học Công nghệ Thông tin<br>
+                <span>TEL: *********</span> <span>Email: *********@uit.edu.vn</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
